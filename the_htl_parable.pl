@@ -118,11 +118,11 @@ ask_for_seat :- go(askForSeat).
 
 /* This rule tells how to move in a given direction. */
 
-go(Direction) :-
+go(Destination) :-
         i_am_at(Here),
-        path(Here, There),
+        path(Here, Destination),
         retract(i_am_at(Here)),
-        assert(i_am_at(There)),
+        assert(i_am_at(Destination)),
         !, look.
 
 go(_) :-
