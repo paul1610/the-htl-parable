@@ -1,6 +1,6 @@
 /* the htl parable, by Leon Leeb, Paul Nell, Niklas Trinkl. */
 
-:- dynamic i_am_at/1, at/2, holding/1. get_name/1.
+:- dynamic i_am_at/1, at/2, holding/1, get_name/1.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(get_name(_)).
 
 /* defines the start location */
@@ -101,7 +101,7 @@ drop(_) :-
 
 /* These rules define the direction letters as calls to go/1. */
 
-right :- go(right01);write('You go right.');nl.
+right :- go(right01).
 up_stairs :- go(stairs).
 hallway :- go(hallway01).
 slightly_opened_door :- go(slightlyOpenedDoor).
@@ -217,4 +217,5 @@ start :-
 /* These rules describe the various rooms.  Depending on
    circumstances, a room may have more than one description. */
 
-describe(someplace) :- write('You are someplace'), nl.
+describe(entrance) :- write('Hello World'), nl.
+describe(right01) :- write('You are right'), nl.
