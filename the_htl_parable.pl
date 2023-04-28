@@ -1,7 +1,7 @@
 /* the htl parable, by Leon Leeb, Paul Nell, Niklas Trinkl. */
 
-:- dynamic i_am_at/1, at/2, holding/1.
-:- retractall(at(_, _)), retractall(i_am_at(_)), retractall(alive(_)).
+:- dynamic i_am_at/1, at/2, holding/1. get_name/1.
+:- retractall(at(_, _)), retractall(i_am_at(_)), retractall(get_name(_)).
 
 /* defines the start location */
 
@@ -48,7 +48,7 @@ path(teacher02, office). /* 1.0 -> 1.1 */
 path(office, coffee). /* 1.1 -> 1.2 */
 path(office, class). /* 1.1 -> 3 */
 
-path(coffee, _). /* 1.2 -> TODO: RESET */
+path(coffee, _). /* 1.2 -> TODO: RESET ;- die. */
 path(coffe, exit). /* 1.2 -> 1.3 */
 
 path(class, seat). /* 3 -> 4 */
@@ -57,7 +57,7 @@ path(class, askForSeat). /* 3 -> 3.1 */
 
 /* These facts tell where the various objects in the game are located. */
 
-/* at(thing, someplace). */
+at(useless_item, stay).
 
 /* These rules describe how to pick up an object. */
 
@@ -79,6 +79,11 @@ take(_) :-
         nl.
 
 
+/* lists the objects you are holding */
+
+inventory :- holding(X), write(X), nl, fail.
+
+
 /* These rules describe how to put down an object. */
 
 drop(X) :-
@@ -96,7 +101,7 @@ drop(_) :-
 
 /* These rules define the direction letters as calls to go/1. */
 
-right :- go(right01).
+right :- go(right01);write('You go right.');nl.
 up_stairs :- go(stairs).
 hallway :- go(hallway01).
 slightly_opened_door :- go(slightlyOpenedDoor).
@@ -115,6 +120,7 @@ seat :- go(seat).
 stand :- go(stand).
 stay :- go(stay).
 ask_for_seat :- go(askForSeat).
+
 
 /* This rule tells how to move in a given direction. */
 
@@ -152,9 +158,27 @@ notice_objects_at(_).
 
 /* This rule tells how to die. */
 
-die :-
-        finish.
+die :- finish.
 
+
+/* Get the user name */
+
+get_name(john).
+write_name :- get_name(X), write(X).
+
+name :-
+        write('please type your name: '),
+        nl,
+        read(X),
+        retract(get_name(john)), /* TODO: fix, name can only be changed once */
+        assert(get_name(X)),
+        heisenberg(X).
+
+heisenberg(Name) :- 
+        Name = 'say_my_name', 
+        write('Heisenberg'), 
+        retract(get_name(Name)),
+        assert(get_name('Heisenberg')).
 
 /* Under UNIX, the "halt." command quits Prolog but does not
    remove the output window. On a PC, however, the window
