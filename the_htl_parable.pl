@@ -217,5 +217,5 @@ start :-
 /* These rules describe the various rooms.  Depending on
    circumstances, a room may have more than one description. */
 
-describe(entrance) :- write('Hello World'), nl.
-describe(right01) :- write('You are right'), nl.
+describe(entrance) :- write('Start Text'), nl.
+describe(stay) :- write('You are staying'), nl.
