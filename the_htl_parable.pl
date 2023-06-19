@@ -218,4 +218,20 @@ start :-
    circumstances, a room may have more than one description. */
 
 describe(entrance) :- write('Start Text'), nl.
-describe(stay) :- write('You are staying'), nl.
+describe(stay) :- 
+        /* todo: wait 1min? */
+        write_name,
+        write(' wasn''t sure if he should go up the stairs. He was thinking if it is the right decision to make, but after a good while he finally decided to go up the stairs.'),
+        nl,
+        /* todo: wait 1min? */
+        write_name,
+        write(' , hello? Are you still here, you have to work with me already. I have to tell a story.'),
+        nl,
+        /* todo: wait 1min? */
+        write_name,
+        write(' was probably not there anymore, he just left the narrator before even making one decision. Oh wait you were looking around the whole time and just noticed a weird looking item'),
+        /* todo: insert item */
+        write('?'),
+        nl,
+        write('Do you want to pick it up?'),
+        nl.
