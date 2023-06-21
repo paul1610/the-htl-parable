@@ -26,22 +26,15 @@ path(slightlyOpenedDoor, stairs). /* 0.2.0 -> 1 */
 path(hallway01, door01). /* 0.3 -> 0.4 */
 path(hallway01, teacher01). /* 0.3 -> 0.3.0 */
 
-path(door01, hole). /* 0.4 -> 0.5 */
 path(door01, panic). /* 0.4 -> 0.3.1 */
 
 path(teacher01, panic). /* 0.3.0 -> 0.3.1 */
 path(teacher01, office). /* 0.3.0 -> 1.1 */
 
-path(hole, exit). /* 0.5 -> 1.3 */
 path(panic, _). /* 0.3.1 -> TODO: RESET */
 
 path(stairs, teacher02). /* 1 -> 1.0 */
 path(stairs, ignore). /* 1 -> 2 */
-
-path(ignore, class). /* 2 -> 3 */
-path(ignore, toilet). /* 2 -> 2.0 */
-
-path(toilet, class). /* 2.0 -> 3 */
 
 path(teacher02, office). /* 1.0 -> 1.1 */
 
@@ -51,9 +44,56 @@ path(office, class). /* 1.1 -> 3 */
 path(coffee, _). /* 1.2 -> TODO: RESET ;- die. */
 path(coffe, exit). /* 1.2 -> 1.3 */
 
+path(exit, exploreOnYourOwn). /* 1.3 -> 1.3.0 */
+path(exploreOnYourOwn, hideInToilet). /* 1.3.0 -> 1.3.0.0 */
+path(hideInToilet, _). /* 1.3.0.0 -> 1.3.4 RESET */ 
+path(exploreOnYourOwn, goToLightSaber). /* 1.3.0 -> 1.3.1 */ 
+path(goToLightSaber, _). /* 1.3.1 -> 1.3.4 RESET */
+path(exit, trustNarrator). /* 1.3 -> 1.4 */
+
+path(trustNarrator, hideInToilet). /* 1.4 -> 1.3.0.0 */
+path(trustNarrator, findButton). /* 1.4 -> 1.5 */
+
+path(findButton, runWithOutNarrator).  /* 1.5 -> 1.5.0 */
+
+path(findButton, freeNarrator). /* 1.5 -> 1.6 */
+
+path(freeNarrator, runWithNarrator). /* 1.6 -> 1.7 */
+path(freeNarrator, attack). /* 1.6 -> 3.5 */
+path(attack, successNeedWeapon). /* 3.5 -> 3.5.0 */
+path(attack, _). /* 3.5 -> 3.6 TODO: FAIL and RESET */
+
+
+path(ignore, class). /* 2 -> 3 */
+path(ignore, toilet). /* 2 -> 2.0 */
+
+path(toilet, class). /* 2.0 -> 3 */
+
 path(class, seat). /* 3 -> 4 */
 path(class, stand). /* 3 -> 3.0 */
 path(class, askForSeat). /* 3 -> 3.1 */
+
+path(askForSeat, stay). /* 3.1 -> 3.2 */
+path(askForSeat, exitClass). /* 3.1 -> 3.1.0 */
+path(stay, exitClass). /* 3.2 -> 3.1.0 */
+path(stay, pressButton). /* 3.2 -> 3.3 */
+
+path(exitClass, exitSchool). /* 3.1.0 -> 3.1.1 */
+path(exitClass, talkToTeacher). /* 3.1.0 -> 5 */
+path(exitSchool, _). /* 3.1.1 -> TODO: RESET */
+
+path(seat, talkToTeacher). /* 4 -> 5 */
+path(seat, exitClass). /* 4 -> 3.1.0 */
+
+path(talkToTeacher, registerAtSchool). /* 5 -> 6 */
+path(registerAtSchool, leave). /* 6 -> 7 TODO?? */
+path(talkToTeacher, pressButton). /* 5 -> 3.3 */
+
+path(pressButton, helpNarrator). /* 3.3 -> 3.4 */
+path(pressButton, runWithOutNarrator). /* 3.3 -> 1.5.0 */
+
+path(helpNarrator, attack). /* 3.4 -> 3.5*/
+path(helpNarrator, runWithNarrator). /* 3.4 -> 1.7 */
 
 /* These facts tell where the various objects in the game are located. */
 
@@ -106,7 +146,6 @@ up_stairs :- go(stairs).
 hallway :- go(hallway01).
 slightly_opened_door :- go(slightlyOpenedDoor).
 door :- go(door01).
-hole :- go(hole).
 panic :- go(panic).
 teacher_1 :- go(teacher01).
 teacher_2 :- go(teacher02).
@@ -120,7 +159,23 @@ seat :- go(seat).
 stand :- go(stand).
 stay :- go(stay).
 ask_for_seat :- go(askForSeat).
-
+explore_on_your_own :- go(exploreOnYourOwn).
+hide_in_toilet :- go(hideInToilet).
+go_to_light_saber :- go(goToLightSaber).
+trust_narrator :- go(trustNarrator).
+find_button :- go(findButton).
+run_without_narrator :- go(runWithOutNarrator).
+free_narrator :- go(freeNarrator).
+attack :- go(attack).
+success_need_weapon :- go(successNeedWeapon).
+exit_class :- go(exitClass).
+press_button :- go(pressButton).
+talk_to_teacher :- go(talkToTeacher).
+register_at_school :- go(registerAtSchool).
+leave :- go(leave).
+help_narrator :- go(helpNarrator).
+run_with_narrator :- go(runWithNarrator).
+exit_school :- go(exitSchool).
 
 /* This rule tells how to move in a given direction. */
 
@@ -225,7 +280,7 @@ describe(stay) :-
         nl,
         /* todo: wait 1min? */
         write_name,
-        write(' , hello? Are you still here, you have to work with me already. I have to tell a story.'),
+        write(', hello? Are you still here, you have to work with me already. I have to tell a story.'),
         nl,
         /* todo: wait 1min? */
         write_name,
