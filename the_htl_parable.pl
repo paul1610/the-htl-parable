@@ -156,11 +156,6 @@ notice_objects_at(Place) :-
 notice_objects_at(_).
 
 
-/* This rule tells how to die. */
-
-die :- finish.
-
-
 /* Get the user name */
 
 get_name(john).
@@ -179,16 +174,6 @@ heisenberg(Name) :-
         write('Heisenberg'), 
         retract(get_name(Name)),
         assert(get_name('Heisenberg')).
-
-/* Under UNIX, the "halt." command quits Prolog but does not
-   remove the output window. On a PC, however, the window
-   disappears before the final output can be seen. Hence this
-   routine requests the user to perform the final "halt." */
-
-finish :-
-        nl,
-        write('The game is over. Please enter the "halt." command.'),
-        nl.
 
 
 /* This rule just writes out game instructions. */
@@ -217,7 +202,15 @@ start :-
 /* These rules describe the various rooms.  Depending on
    circumstances, a room may have more than one description. */
 
-describe(entrance) :- write('Start Text'), nl.
+/* 0 */
+describe(entrance) :- 
+        name,
+        write('Narrator: '),
+        write_name,
+        write(' just entered the HTL, you are wondering where you are and what this strange building is. Looking to the right you see a hallway and in front of you are stairs. After a little while you decide to go up the stairs.'),
+        nl.
+
+/* 0.1 */
 describe(stay) :- 
         /* todo: wait 1min? */
         write_name,
@@ -235,3 +228,122 @@ describe(stay) :-
         nl,
         write('Do you want to pick it up?'),
         nl.
+
+/* 0.2 */
+describe(right01) :-
+        write_name,
+        write(' went right and not up the really nice-looking stairs, which is ok, he probably just wanted to explore a little, so he admires them and walks away.'),
+        nl.
+
+/* 0.2.0 */
+describe(slightlyOpenedDoor) :-
+        write_name,
+        write(' persisted to not follow any instructions, whatsoever and just goes into the open door.'),
+        nl,
+        write_name,
+        write(' don''t you know that''s a little bald of you.'),
+        nl,
+        write('Anyway, you look around for a bit and find a red triangle, '),
+        write_name,
+        write(' ignores it and goes back to the stairs he wanted to go up.'),
+        /* TODO: item */
+        nl.
+
+/* 0.3 */
+describe(hallway01) :-
+        write_name,
+        write(' wanted to prove that he is in control of the story, so he went down the hallway instead of going the intended way.'),
+        nl,
+        write('While walking '),
+        write_name,
+        write(' noticed a teacher in front of him. He thinks that it is not too late to get back to the main story and talked to him.'),
+        nl.
+
+/* 0.3.0 */
+describe(teacher01) :-
+        write_name,
+        write(' finally did the right thing and talked to the teacher. He doesn''t even know why because he didn''t have anything to talk about. He just rambled a bit about the weather. '),
+        write_name,
+        write(' didn''t get why but the conversation flow really well and the teacher invited him to follow him into an office which '),
+        write_name,
+        write(' gladly accepted.'),
+        nl.
+
+/* 0.3.1 */
+describe(panic) :-
+        write('But no. Of course, not because '),
+        write_name,
+        write(' never does what he is supposed to do. So, he just started to panic he didn''t know what to say so he just said an unbelievably stupid excuse and ran off.'),
+        nl.
+
+/* 0.4 */
+describe(door01) :-
+        write('But of course, '),
+        write_name,
+        write(' didn''t just talk to the teacher because '),
+        write_name,
+        write(' has no social skills what so ever so he just entered to door to his left. He quickly closed the door behind him. When he looked up, he found a huge dark hole in front of him. He was really freaked out by It and didn''t really know what to do. He thought if he should just go out of the school as quickly as possible, but no, he is too much into it now so he just jumped into the hole.'),
+        nl.
+
+/* 1 */
+describe(stairs) :-
+        write('You go up the stairs and think “what a nice place”. In front of you is a teacher. You are wondering if you should talk to him, but you decide not to and just walk by since you wouldn''t have anything to talk about anyway. as you walk up the stairs you notice a knife hanging on the wall, you probably shouldn''t take things that don''t belong to him.'),
+        /* TODO: item */
+        nl.
+
+/* 1.0 */
+describe(teacher02) :-
+        write_name,
+        write(' just greeted the teacher. He didn''t even know why but he just kept saying words and it kept working. It seemed to be an really interesting conversation. After like 5 minutes of talk the teacher invited him to his office but '),
+        write_name,
+        write(' didn''t except his offer because it just didn''t feel right.'),
+        nl.
+
+/* 1.1 */
+describe(office) :-
+        write_name,
+        write(' just ignored the story path because he wanted to “explore on his own” or something like that so he is just following the teacher into the office. So, the conversation starts going again and the teacher offers him a cup of coffee. He realises that he is not on the right way and quickly goes back to the classroom and refuses the coffee.'),
+        nl.
+
+/* 1.2 */
+describe(coffee) :-
+        write('You know you shouldn''t drink something from strangers, I really tried to keep you out of this. So as '),
+        write_name,
+        write(' drinks the coffer he starts to feel a little dizzy and nauseous, and then suddenly blacks out. When he opens his eyes again, he is tied to a chair in a dark room that looks to be a basement.'),
+        /* Todo: use item #2 */
+        nl.
+
+/* 1.3 */
+describe(exit) :-
+        write_name,
+        write(' uses the knife that he picked up earlier and frees himself running out on the hallway, I know '),
+        write_name,
+        write(' we had a rough start but this is a really bad situation, in order for you to be save you need to trust me now, and do exactly what I say.'),
+        nl.
+
+/* 1.3.0.0 */
+describe(toilet) :-
+        write_name,
+        write(' quickly runs into the toilet and tries to his, sadly the teacher saw him, follows him into the toilet and gives him a Frühwarnung.'),
+        nl.
+
+describe(ignore) :-
+        nl.
+
+describe(class) :-
+        nl.
+
+describe(seat) :-
+        nl.
+
+describe(stand) :-
+        nl.
+
+describe(askForSeat) :-
+        nl.
+
+/* 
+TODO: 0.3.2 - wann wird es getriggerd? 
+TODO: 1.3.0.0 - explore
+TODO: 1.2.0 - wann triggern wenn es kein sleep gibt?
+*/
