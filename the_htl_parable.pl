@@ -549,7 +549,7 @@ describe(reset05) :-
         retractall(inventory).
 
 /* 3.6 */
-describe(reset05) :-
+describe(reset04) :-
         write(' Sadly, you are very bad at LOAL and your answer was wrong so you get the Frühwarnung and I have to reset the game :( '),
         nl,
         go(entrance),
