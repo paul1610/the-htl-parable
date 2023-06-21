@@ -1,7 +1,7 @@
 /* the htl parable - by Leon Leeb, Paul Nell, Niklas Trinkl. */
 
-:- dynamic i_am_at/1, at/2, holding/1, get_name/1.
-:- retractall(at(_, _)), retractall(i_am_at(_)), retractall(get_name(_)).
+:- dynamic i_am_at/1, at/2, holding/1, get_name/1, path/2.
+:- retractall(at(_, _)), retractall(i_am_at(_)), retractall(get_name(_)), retractall(path(_, _)), retractall(holding(_)).
 
 /* defines the start location */
 
@@ -42,7 +42,6 @@ path(office, coffee). /* 1.1 -> 1.2 */
 path(office, class). /* 1.1 -> 3 */
 
 path(coffee, reset02). /* 1.2 -> 1.2.0 */
-path(coffe, exit). /* 1.2 -> 1.3 */
 
 path(exit, exploreOnYourOwn). /* 1.3 -> 1.3.0 */
 path(exploreOnYourOwn, hideInToilet). /* 1.3.0 -> 1.3.0.0 */
@@ -98,7 +97,9 @@ path(reset0, entrance).
 
 /* These facts tell where the various objects in the game are located. */
 
-at(useless_item, stay).
+at(controllKey, stay).
+at(redTriangle, slightlyOpenedDoor).
+at(huntingKnife, stairs).
 
 /* These rules describe how to pick up an object. */
 
@@ -112,16 +113,33 @@ take(X) :-
         at(X, Place),
         retract(at(X, Place)),
         assert(holding(X)),
-        write('OK.'),
         !, nl.
 
 take(_) :-
         write('I don''t see it here.'),
         nl.
 
+pick(controllKey) :-
+        take(controllKey),
+        write('Oh, that is very shiny, I wonder what it is used for. It looks very much like a remote-control key, when you press the button, you should hear a beeping sound when the object it unlocks is nearby.'),
+        !, nl.
+
+pick(redTriangle) :-
+        take(redTriangle),
+        write('Of course, '),
+        write_name,
+        write(' just picks up the triangle as if it was his property with no concern for other people. '),
+        write_name,
+        write(' is a little ashamed of himself but just goes back to the stairs so we can finally proceed with the story.'),
+        !, nl.
+
+pick(huntingKnife) :-
+        take(huntingKnife),
+        write('But you just pick up the knife, it looks to be kind of expensive, probably a hunting knife.'),
+        assert(path(coffee, exit)), /* 1.2 -> 1.3 */
+        !, nl.
 
 /* lists the objects you are holding */
-
 inventory :- holding(X), write(X), nl, fail.
 
 
@@ -132,7 +150,7 @@ drop(X) :-
         i_am_at(Place),
         retract(holding(X)),
         assert(at(X, Place)),
-        write('OK.'),
+        write('Ok.'),
         !, nl.
 
 drop(_) :-
@@ -211,7 +229,12 @@ look :-
 /* Reset the game */ 
 reset :- 
         goNoMsg(reset0), 
+        retractall(at(_, _)),
+        retractall(get_name(_)),
+        retractall(path(_, _)),
         retractall(holding(_)),
+        assert(i_am_at(entrance)), /* todo fix reset location */
+        start,
         nl.
 
 /* Map for paths */
@@ -267,8 +290,7 @@ print_available_commands([Command|Rest]) :-
 
 notice_objects_at(Place) :-
         at(X, Place),
-        write('There is a '), write(X), write(' here.'), nl,
-        /* TODO: fix (wrong commands displayed) */
+        write('There is a '), write(X), write(' here. Use ''pick(itemName).'' to pick it up'), nl,
         fail.
 
 notice_objects_at(_).
@@ -299,6 +321,7 @@ heisenberg(Name) :-
 /* TODO: Update */
 instructions :-
         nl,
+        write('Welcome to The HTL Parable, before we start you can look through our list of commands here'), nl,
         write('Enter commands using standard Prolog syntax.'), nl,
         write('Available commands are:'), nl,
         write('start: Start the game.'), nl,
@@ -306,6 +329,7 @@ instructions :-
         write('inventory: Show which items you have.'), nl,
         write('look: Describe your sourrundings.'), nl,
         write('reset: Reset the game.'), nl,
+        write('drop(Item): Drop an item.'), nl,
         nl.
 
 /* This rule prints out instructions and tells where you are. */
@@ -338,7 +362,6 @@ describe(stay) :-
         /* todo: wait 1min? */
         write_name,
         write(' was probably not there anymore, he just left the narrator before even making one decision. Oh wait you were looking around the whole time and just noticed a weird looking item'),
-        /* todo: insert item */
         write('?'),
         nl,
         write('Do you want to pick it up?'),
@@ -360,7 +383,6 @@ describe(slightlyOpenedDoor) :-
         write('Anyway, you look around for a bit and find a red triangle, '),
         write_name,
         write(' ignores it and goes back to the stairs he wanted to go up.'),
-        /* TODO: item */
         nl.
 
 /* 0.3 */
@@ -402,8 +424,7 @@ describe(door01) :-
 
 /* 1 */
 describe(stairs) :-
-        write('You go up the stairs and think “what a nice place”. In front of you is a teacher. You are wondering if you should talk to him, but you decide not to and just walk by since you wouldn''t have anything to talk about anyway. as you walk up the stairs you notice a knife hanging on the wall, you probably shouldn''t take things that don''t belong to him.'),
-        /* TODO: item */
+        write('You go up the stairs and think ''what a nice place''. In front of you is a teacher. You are wondering if you should talk to him, but you decide not to and just walk by since you wouldn''t have anything to talk about anyway. as you walk up the stairs you notice a knife hanging on the wall, you probably shouldn''t take things that don''t belong to him.'),
         nl.
 
 /* 1.0 */
@@ -417,7 +438,7 @@ describe(teacher02) :-
 /* 1.1 */
 describe(office) :-
         write_name,
-        write(' just ignored the story path because he wanted to “explore on his own” or something like that so he is just following the teacher into the office. So, the conversation starts going again and the teacher offers him a cup of coffee. He realises that he is not on the right way and quickly goes back to the classroom and refuses the coffee.'),
+        write(' just ignored the story path because he wanted to ''explore on his own'' or something like that so he is just following the teacher into the office. So, the conversation starts going again and the teacher offers him a cup of coffee. He realises that he is not on the right way and quickly goes back to the classroom and refuses the coffee.'),
         nl.
 
 /* 1.2 */
@@ -425,7 +446,8 @@ describe(coffee) :-
         write('You know you shouldn''t drink something from strangers, I really tried to keep you out of this. So as '),
         write_name,
         write(' drinks the coffer he starts to feel a little dizzy and nauseous, and then suddenly blacks out. When he opens his eyes again, he is tied to a chair in a dark room that looks to be a basement.'),
-        /* Todo: use item #2 & else reset */
+        /*todo fix*/
+        path(coffee, exit) -> (assert(i_am_at(exit)), look, fail) ; (goNoMsg(reset02), fail),
         nl.
 
 /* 1.3 */
@@ -563,7 +585,7 @@ describe(registerAtSchool) :-
 
 describe(reset0) :- 
         nl,
-        write(' The game will now reset '),
+        write('The game will now reset '),
         nl,
         goNoMsg(entrance),
         nl,
