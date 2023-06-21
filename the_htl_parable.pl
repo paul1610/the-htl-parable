@@ -1,4 +1,4 @@
-/* the htl parable, by Leon Leeb, Paul Nell, Niklas Trinkl. */
+/* the htl parable - by Leon Leeb, Paul Nell, Niklas Trinkl. */
 
 :- dynamic i_am_at/1, at/2, holding/1, get_name/1.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(get_name(_)).
