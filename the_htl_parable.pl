@@ -60,7 +60,6 @@ path(findButton, freeNarrator). /* 1.5 -> 1.6 */
 
 path(freeNarrator, runWithNarrator). /* 1.6 -> 1.7 */
 path(freeNarrator, attack). /* 1.6 -> 3.5 */
-path(attack, successNeedWeapon). /* 3.5 -> 3.5.0 */
 path(attack, _). /* 3.5 -> 3.6 TODO: FAIL and RESET */
 
 
@@ -73,10 +72,10 @@ path(class, seat). /* 3 -> 4 */
 path(class, stand). /* 3 -> 3.0 */
 path(class, askForSeat). /* 3 -> 3.1 */
 
-path(askForSeat, stay). /* 3.1 -> 3.2 */
+path(askForSeat, wait). /* 3.1 -> 3.2 */
 path(askForSeat, exitClass). /* 3.1 -> 3.1.0 */
-path(stay, exitClass). /* 3.2 -> 3.1.0 */
-path(stay, pressButton). /* 3.2 -> 3.3 */
+path(wait, exitClass). /* 3.2 -> 3.1.0 */
+path(wait, pressButton). /* 3.2 -> 3.3 */
 
 path(exitClass, exitSchool). /* 3.1.0 -> 3.1.1 */
 path(exitClass, talkToTeacher). /* 3.1.0 -> 5 */
@@ -158,6 +157,7 @@ coffee :- go(coffee).
 seat :- go(seat).
 stand :- go(stand).
 stay :- go(stay).
+wait :- go(wait).
 ask_for_seat :- go(askForSeat).
 explore_on_your_own :- go(exploreOnYourOwn).
 hide_in_toilet :- go(hideInToilet).
@@ -167,7 +167,6 @@ find_button :- go(findButton).
 run_without_narrator :- go(runWithOutNarrator).
 free_narrator :- go(freeNarrator).
 attack :- go(attack).
-success_need_weapon :- go(successNeedWeapon).
 exit_class :- go(exitClass).
 press_button :- go(pressButton).
 talk_to_teacher :- go(talkToTeacher).
@@ -197,8 +196,15 @@ look :-
         describe(Place),
         nl,
         notice_objects_at(Place),
+        nl,
+        available_paths(Place),
         nl.
 
+available_paths(Place) :-
+        path(Place, Destination),
+        write('There is a path to '), write(Destination),
+        nl,
+        fail.
 
 /* These rules set up a loop to mention all the objects
    in your vicinity. */
@@ -206,6 +212,7 @@ look :-
 notice_objects_at(Place) :-
         at(X, Place),
         write('There is a '), write(X), write(' here.'), nl,
+        /* TODO: fix (wrong commands displayed) */
         fail.
 
 notice_objects_at(_).
@@ -237,13 +244,8 @@ instructions :-
         nl,
         write('Enter commands using standard Prolog syntax.'), nl,
         write('Available commands are:'), nl,
-        write('start.             -- to start the game.'), nl,
-        write('n.  s.  e.  w.     -- to go in that direction.'), nl,
-        write('take(Object).      -- to pick up an object.'), nl,
-        write('drop(Object).      -- to put down an object.'), nl,
-        write('look.              -- to look around you again.'), nl,
-        write('instructions.      -- to see this message again.'), nl,
-        write('halt.              -- to end the game and quit.'), nl,
+        write('name: Set your name.'), nl,
+        write('TODO'), nl,
         nl.
 
 
@@ -259,7 +261,6 @@ start :-
 
 /* 0 */
 describe(entrance) :- 
-        name,
         write('Narrator: '),
         write_name,
         write(' just entered the HTL, you are wondering where you are and what this strange building is. Looking to the right you see a hallway and in front of you are stairs. After a little while you decide to go up the stairs.'),
@@ -293,8 +294,7 @@ describe(right01) :-
 /* 0.2.0 */
 describe(slightlyOpenedDoor) :-
         write_name,
-        write(' persisted to not follow any instructions, whatsoever and just goes into the open door.'),
-        nl,
+        write(' persisted to not follow any instructions, whatsoever and just goes into the open door. '),
         write_name,
         write(' don''t you know that''s a little bald of you.'),
         nl,
@@ -365,7 +365,7 @@ describe(coffee) :-
         write('You know you shouldn''t drink something from strangers, I really tried to keep you out of this. So as '),
         write_name,
         write(' drinks the coffer he starts to feel a little dizzy and nauseous, and then suddenly blacks out. When he opens his eyes again, he is tied to a chair in a dark room that looks to be a basement.'),
-        /* Todo: use item #2 */
+        /* Todo: use item #2 & else reset */
         nl.
 
 /* 1.3 */
@@ -376,29 +376,128 @@ describe(exit) :-
         write(' we had a rough start but this is a really bad situation, in order for you to be save you need to trust me now, and do exactly what I say.'),
         nl.
 
+/* 1.3.0 */
+describe(exploreOnYourOwn) :-
+        write('Oh come on, this is bad, this won''t go well for you, you really should have trusted me this time, anyway too late now, in front of you is a toilet door you could hide in, as you hear a teacher behind you, but in front of you is a lightsaber you could use to defend yourself, this is on you now, I am not even trying to get you back on the real path, you deicide.'),
+        nl.
+
 /* 1.3.0.0 */
-describe(toilet) :-
+describe(hideInToilet) :-
         write_name,
         write(' quickly runs into the toilet and tries to his, sadly the teacher saw him, follows him into the toilet and gives him a Frühwarnung.'),
         nl.
 
+/* 1.3.1 */
+describe(goToLightSaber) :-
+        write('So '),
+        write_name,
+        write(' decided to sprint to the lightsaber, he grabbed it, and a teacher is approaching him with a deadly look in his eyes and a pistol that appears to fire Frühwarnungen whatever that means, he can block the first two shots and is ready for the next one, his inner jedi seems to be awaken but right when he wants to block the next one, a teacher from behind gives him the Frühwarnung.'),
+        nl.
+
+/* 1.4 */
+describe(trustNarrator) :-
+        write('Oh, that''s really great, it''s too late to get you on the intendent path so let''s try to escape together, go up the stairs again and into the classroom, it should be empty by now. When you are there, there is a button behind the second picture, press it.'),
+        nl.
+
+/* 1.5 */
+describe(findButton) :-
+        write('As you press the button a secret door opens behind you, you go in and see me, some behind me keeps me hostage but you decide to knock him out and help me.'),
+        nl.
+
+/* 1.6 */
+describe(freeNarrator) :-
+        write('So, you grabbed a conveniently placed pipe next to you and pet the guy behind me with it.'),
+        nl.
+
+/* 2 */
 describe(ignore) :-
+        write('As you walk by the teacher you hear him burbling about science in a classroom with a slightly open door. You don''t know the teacher, but you still enter the classroom because you are really interested in the topic.'),
         nl.
 
+/* 2.0 */
+describe(toilet) :-
+        write('But no, '),
+        write_name,
+        write(' just decided to go into the toilet for no reason, '),
+        write_name,
+        write(' didn''t even need to pee now just stands there, wondering what he should do. No waiting any longer he decides to exit the toilet again and finally go into the classroom and listen to the teacher.'),
+        nl.
+
+/* 3 */
 describe(class) :-
+        write('The teacher sees you and asks you to take a seat. You think it is a bit odd, but more than welcoming and follow her instructions.'),
         nl.
 
-describe(seat) :-
-        nl.
-
+/* 3.0 */
 describe(stand) :-
+        write_name,
+        write(' weirdly enough didn''t follow the instructions but just stood there like a weirdo. What are you doing '),
+        write_name,
+        write('?'),
         nl.
 
+/* 3.1 */
 describe(askForSeat) :-
+        write_name,
+        write(' just ask someone to sit on their seat. *Quick interruption form narrator* hey, what are you doing, aren''t you ashamed man. So, as I was saying '),
+        write_name,
+        write(' asked to sit on the seat of someone else, probably because they were so confused and overwhelmed by the questions they said yes. So, he set on the seat and listened to the lesson of the teacher.'),
         nl.
 
-/* 
-TODO: 0.3.2 - wann wird es getriggerd? 
-TODO: 1.3.0.0 - explore
-TODO: 1.2.0 - wann triggern wenn es kein sleep gibt?
-*/
+/* 3.1.0 */
+describe(exitClass) :-
+        write('What are you doing '),
+        write_name,
+        write(' you should have talked to the teacher, whatever it''s not too late, just wait till they are done with the lesson and talk to them.'),
+        nl.
+
+/* 3.1.1 */
+describe(exitSchool) :-
+        write('So, you are just leaving? Are you serious? There are so many different paths you could have taken but you took this one? Whatever it''s too late now.'),
+        nl.
+
+/* 3.2 */
+describe(wait) :-
+        write_name,
+        write(' just waited and looked around, he noticed a strange looking button on the wall and pressed it.'),
+        nl.
+
+/* 3.3 */
+describe(pressButton) :-
+        write('As you press the button a secret door opens behind you, you go in and see me, someone behind me keeps me hostage but you decide to knock him out and help me.'),
+        nl.
+
+/* 3.4 */
+describe(helpNarrator) :-
+        write('You grabbed a conveniently placed pipe next to you and pet the guy behind me with it.'),
+        nl.
+
+/* 3.5 */
+describe(attack) :-
+        write('Some other teacher throws a Loal question at you which you have to get right in order to doge the Frühwarnung.'),
+        nl.
+
+/* 4 */
+describe(seat) :-
+        write_name,
+        write(' just took a seat and listened to the whole lesson, he thought it was very interesting. So, after the lesson he talked to the teacher.'),
+        nl.
+
+/* 5 */
+describe(talkToTeacher) :-
+        write('He walked up to the teacher and was like, “Hey man great lesson!” and they had a good conversation, after like 2 minutes of talking the teacher said that '),
+        write_name,
+        write(' should register at the school and that he''d really like it here which he did.'),
+        nl.
+
+/* 6 */
+describe(registerAtSchool) :-
+        write('So, '),
+        write_name,
+        write(' followed the instructions of the teacher and applied for the school.'),
+        nl.
+
+/* 7 */
+describe(leave) :-
+        write('He left the school happy with his decision.'),
+        nl.
