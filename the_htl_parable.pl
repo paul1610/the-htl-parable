@@ -94,14 +94,7 @@ path(pressButton, runWithOutNarrator). /* 3.3 -> 1.5.0 */
 path(helpNarrator, attack). /* 3.4 -> 3.5*/
 path(helpNarrator, runWithNarrator). /* 3.4 -> 1.7 */
 
-path(reset01, entrance). /* 0.3.2 -> 0 */
-path(reset02, entrance). /* 1.2.0 -> 0 */
-path(reset03, entrance). /* 1.3.4 -> 0 */
-path(reset04, entrance). /* 3.6 -> 0 */
-path(reset05, entrance). /* 3.1.2 -> 0 */     
-path(leave, entrance). /* 7 -> 0 */
-path(runWithNarrator, entrance). /* 1.7 -> 0 */
-path(runWithOutNarrator, entrance). /* 1.5.0 -> 0 */
+path(reset0, entrance).
 
 /* These facts tell where the various objects in the game are located. */
 
@@ -154,7 +147,7 @@ up_stairs :- go(stairs).
 hallway :- go(hallway01).
 slightly_opened_door :- go(slightlyOpenedDoor).
 door :- go(door01).
-panic :- go(panic), go(reset01).
+panic :- goNoMsg(panic).
 teacher_1 :- go(teacher01).
 teacher_2 :- go(teacher02).
 office :- go(office).
@@ -162,26 +155,26 @@ exit :- go(exit).
 ignore :- go(ignore).
 class :- go(class).
 toilet :- go(toilet).
-coffee :- go(coffee), go(reset02).
+coffee :- go(coffee); go(reset02).
 seat :- go(seat).
 stand :- go(stand).
 stay :- go(stay).
 wait :- go(wait).
 ask_for_seat :- go(askForSeat).
 explore_on_your_own :- go(exploreOnYourOwn).
-hide_in_toilet :- go(hideInToilet), go(reset03).
-go_to_light_saber :- go(goToLightSaber), go(reset03).
+hide_in_toilet :- go(hideInToilet); go(reset03).
+go_to_light_saber :- go(goToLightSaber); go(reset03).
 trust_narrator :- go(trustNarrator).
-find_button :- go(findButton), go(runWithOutNarrator).
-free_narrator :- go(freeNarrator), go(runWithNarrator).
-attack :- go(attack), go(reset04).
+find_button :- go(findButton); go(runWithOutNarrator).
+free_narrator :- go(freeNarrator); go(runWithNarrator).
+attack :- go(attack); go(reset04).
 exit_class :- go(exitClass).
-press_button :- go(pressButton), go(runWithOutNarrator).
+press_button :- go(pressButton); go(runWithOutNarrator).
 talk_to_teacher :- go(talkToTeacher).
-register_at_school :- go(registerAtSchool), go(leave).
+register_at_school :- go(registerAtSchool); go(leave).
 leave :- go(leave).
-help_narrator :- go(helpNarrator), go(runWithNarrator).
-exit_school :- go(exitSchool), go(reset05).
+help_narrator :- go(helpNarrator); go(runWithNarrator).
+exit_school :- go(exitSchool); go(reset05).
 
 /* This rule tells how to move in a given direction. */
 
@@ -195,6 +188,14 @@ go(Destination) :-
 go(_) :-
         write('You can''t go that way.').
 
+goNoMsg(Destination) :-
+        nl,
+        describe(Destination);
+        i_am_at(Here),
+        path(Here, Destination),
+        retract(i_am_at(Here)),
+        assert(i_am_at(Destination)),
+        fail.
 
 /* This rule tells how to look about you. */
 
@@ -255,6 +256,8 @@ instructions :-
         write('start: Start the game.'), nl,
         write('name: Set your name.'), nl,
         write('inventory: Show which items you have.'), nl,
+        write('look: Describe your sourrundings.'), nl,
+        /* TODO: write('reset: Reset the game.'), nl,*/
         write('TODO'), nl,
         nl.
 
@@ -263,8 +266,8 @@ instructions :-
 
 start :-
         instructions,
-        look.
-
+        look,
+        nl.
 
 /* These rules describe the various rooms.  Depending on
    circumstances, a room may have more than one description. */
@@ -339,7 +342,8 @@ describe(panic) :-
         write('But no. Of course, not because '),
         write_name,
         write(' never does what he is supposed to do. So, he just started to panic he didn''t know what to say so he just said an unbelievably stupid excuse and ran off.'),
-        nl.
+        nl,
+        goNoMsg(reset01).
 
 /* 0.4 */
 describe(door01) :-
@@ -510,14 +514,24 @@ describe(registerAtSchool) :-
 
 /* RESETS */
 
+describe(reset0) :- 
+        nl,
+        write('Reset msg'),
+        nl,
+        goNoMsg(entrance),
+        nl,
+        /* TODO: retractall(inventory),*/
+        available_paths(entrance),
+        fail.
+
 /* 0.3.2 */
 describe(reset01) :-
         write('Oh '), 
         write_name, 
         write(' this is a mess, this is really a mess, I don''t even know where you are right now. Let me look through the script quickly *scrolling through pages* no, no, this isn''t supposed to happen. You have run so far off it isn''t ever worth the effort trying to save this. Let me just reset the game and you can try again.'),
         nl,
-        go(entrance), 
-        retractall(inventory).
+        goNoMsg(reset0);
+        nl.
 
 /* 1.2.0 */
 describe(reset02) :-
