@@ -211,6 +211,7 @@ look :-
 /* Reset the game */ 
 reset :- 
         goNoMsg(reset0), 
+        retractall(holding(_)),
         nl.
 
 /* Map for paths */
@@ -566,7 +567,7 @@ describe(reset0) :-
         nl,
         goNoMsg(entrance),
         nl,
-        /* TODO: retractall(inventory),*/
+        retractall(holding(_)), /* retractall items from inventory */
         available_paths(entrance),
         fail.
 
