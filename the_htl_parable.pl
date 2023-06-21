@@ -31,7 +31,7 @@ path(door01, panic). /* 0.4 -> 0.3.1 */
 path(teacher01, panic). /* 0.3.0 -> 0.3.1 */
 path(teacher01, office). /* 0.3.0 -> 1.1 */
 
-path(panic, _). /* 0.3.1 -> TODO: RESET */
+path(panic, reset01). /* 0.3.1 -> 0.3.2 */
 
 path(stairs, teacher02). /* 1 -> 1.0 */
 path(stairs, ignore). /* 1 -> 2 */
@@ -41,14 +41,14 @@ path(teacher02, office). /* 1.0 -> 1.1 */
 path(office, coffee). /* 1.1 -> 1.2 */
 path(office, class). /* 1.1 -> 3 */
 
-path(coffee, _). /* 1.2 -> TODO: RESET ;- die. */
+path(coffee, reset02). /* 1.2 -> 1.2.0 */
 path(coffe, exit). /* 1.2 -> 1.3 */
 
 path(exit, exploreOnYourOwn). /* 1.3 -> 1.3.0 */
 path(exploreOnYourOwn, hideInToilet). /* 1.3.0 -> 1.3.0.0 */
-path(hideInToilet, _). /* 1.3.0.0 -> 1.3.4 RESET */ 
+path(hideInToilet, reset03). /* 1.3.0.0 -> 1.3.4 */ 
 path(exploreOnYourOwn, goToLightSaber). /* 1.3.0 -> 1.3.1 */ 
-path(goToLightSaber, _). /* 1.3.1 -> 1.3.4 RESET */
+path(goToLightSaber, reset03). /* 1.3.1 -> 1.3.4 */
 path(exit, trustNarrator). /* 1.3 -> 1.4 */
 
 path(trustNarrator, hideInToilet). /* 1.4 -> 1.3.0.0 */
@@ -60,8 +60,8 @@ path(findButton, freeNarrator). /* 1.5 -> 1.6 */
 
 path(freeNarrator, runWithNarrator). /* 1.6 -> 1.7 */
 path(freeNarrator, attack). /* 1.6 -> 3.5 */
-path(attack, _). /* 3.5 -> 3.6 TODO: FAIL and RESET */
-
+path(attack, successNeedWeapon). /* 3.5 -> 3.5.0 */
+path(attack, reset04). /* 3.5 -> 3.6 */
 
 path(ignore, class). /* 2 -> 3 */
 path(ignore, toilet). /* 2 -> 2.0 */
@@ -79,7 +79,7 @@ path(wait, pressButton). /* 3.2 -> 3.3 */
 
 path(exitClass, exitSchool). /* 3.1.0 -> 3.1.1 */
 path(exitClass, talkToTeacher). /* 3.1.0 -> 5 */
-path(exitSchool, _). /* 3.1.1 -> TODO: RESET */
+path(exitSchool, reset05). /* 3.1.1 -> 3.1.2 */
 
 path(seat, talkToTeacher). /* 4 -> 5 */
 path(seat, exitClass). /* 4 -> 3.1.0 */
@@ -93,6 +93,15 @@ path(pressButton, runWithOutNarrator). /* 3.3 -> 1.5.0 */
 
 path(helpNarrator, attack). /* 3.4 -> 3.5*/
 path(helpNarrator, runWithNarrator). /* 3.4 -> 1.7 */
+
+path(reset01, entrance). /* 0.3.2 -> 0 */
+path(reset02, entrance). /* 1.2.0 -> 0 */
+path(reset03, entrance). /* 1.3.4 -> 0 */
+path(reset04, entrance). /* 3.6 -> 0 */
+path(reset05, entrance). /* 3.1.2 -> 0 */     
+path(leave, entrance). /* 7 -> 0 */
+path(runWithNarrator, entrance). /* 1.7 -> 0 */
+path(runWithOutNarrator, entrance). /* 1.5.0 -> 0 */
 
 /* These facts tell where the various objects in the game are located. */
 
@@ -145,7 +154,7 @@ up_stairs :- go(stairs).
 hallway :- go(hallway01).
 slightly_opened_door :- go(slightlyOpenedDoor).
 door :- go(door01).
-panic :- go(panic).
+panic :- go(panic), go(reset01).
 teacher_1 :- go(teacher01).
 teacher_2 :- go(teacher02).
 office :- go(office).
@@ -153,28 +162,26 @@ exit :- go(exit).
 ignore :- go(ignore).
 class :- go(class).
 toilet :- go(toilet).
-coffee :- go(coffee).
+coffee :- go(coffee), go(reset02).
 seat :- go(seat).
 stand :- go(stand).
 stay :- go(stay).
 wait :- go(wait).
 ask_for_seat :- go(askForSeat).
 explore_on_your_own :- go(exploreOnYourOwn).
-hide_in_toilet :- go(hideInToilet).
-go_to_light_saber :- go(goToLightSaber).
+hide_in_toilet :- go(hideInToilet), go(reset03).
+go_to_light_saber :- go(goToLightSaber), go(reset03).
 trust_narrator :- go(trustNarrator).
-find_button :- go(findButton).
-run_without_narrator :- go(runWithOutNarrator).
-free_narrator :- go(freeNarrator).
-attack :- go(attack).
+find_button :- go(findButton), go(runWithOutNarrator).
+free_narrator :- go(freeNarrator), go(runWithNarrator).
+attack :- go(attack), go(reset04).
 exit_class :- go(exitClass).
-press_button :- go(pressButton).
+press_button :- go(pressButton), go(runWithOutNarrator).
 talk_to_teacher :- go(talkToTeacher).
-register_at_school :- go(registerAtSchool).
+register_at_school :- go(registerAtSchool), go(leave).
 leave :- go(leave).
-help_narrator :- go(helpNarrator).
-run_with_narrator :- go(runWithNarrator).
-exit_school :- go(exitSchool).
+help_narrator :- go(helpNarrator), go(runWithNarrator).
+exit_school :- go(exitSchool), go(reset05).
 
 /* This rule tells how to move in a given direction. */
 
@@ -497,7 +504,67 @@ describe(registerAtSchool) :-
         write(' followed the instructions of the teacher and applied for the school.'),
         nl.
 
+
+/* RESETS */
+
+/* 0.3.2 */
+describe(reset01) :-
+        write('Oh '), 
+        write_name, 
+        write(' this is a mess, this is really a mess, I don''t even know where you are right now. Let me look through the script quickly *scrolling through pages* no, no, this isn''t supposed to happen. You have run so far off it isn''t ever worth the effort trying to save this. Let me just reset the game and you can try again. '),
+        nl,
+        go(entrance), 
+        retractall(inventory).
+
+/* 1.2.0 */
+describe(reset02) :-
+        write(' You just decide to wait it out, what''s the worst that can happen, after about 10 minutes pass by, a teacher walks in. Oh '),
+        write_name,
+        write('  this is a mess, I don''t even know if this is in the script anymore, wait a sec. Let me find out what your options are *scrolls through papers* oh no '),
+        write_name,
+        write(' this doesn''t look good you are way of the intended path, no point in trying to get you back, let me just restart the game, it will be easier for us both this way. '),
+        nl,
+        go(entrance),
+        retractall(inventory).
+
+/* 1.3.4 */
+describe(reset03) :-
+        write(' Well, that didn''t go well for you, maybe you''ll do better in the next run '),
+        nl,
+        go(entrance),
+        retractall(inventory).
+
+/* 1.5.0 */
+describe(runWithOutNarrator) :- 
+        write(' You coward, you just ran off without me, well I can''t be free neither can you, I''ll reset the game and we will start all over again. '),
+        nl,
+        go(entrance),
+        retractall(inventory).
+
+/* 3.1.2 */
+describe(reset05) :- 
+        write('  Let me just reset you back to the beginning. Don''t ever do that again. '), 
+        nl, 
+        go(entrance),
+        retractall(inventory).
+
+/* 3.6 */
+describe(reset05) :-
+        write(' Sadly, you are very bad at LOAL and your answer was wrong so you get the Frühwarnung and I have to reset the game :( '),
+        nl,
+        go(entrance),
+        retractall(inventory).
+
 /* 7 */
-describe(leave) :-
-        write('He left the school happy with his decision.'),
-        nl.
+describe(leave) :- 
+        write(' He left the school happy with his decision.'),
+        nl,
+        go(entrance),
+        retractall(inventory).
+
+/* 1.7 */
+describe(runWithNarrator) :-
+        write('So, we ran off together and we finally escaped the HTL-Parable, yay happy end.'),
+        nl, 
+        go(entrance), 
+        retractall(inventory).
