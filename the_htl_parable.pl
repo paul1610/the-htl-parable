@@ -208,6 +208,11 @@ look :-
         available_paths(Place),
         nl.
 
+/* Reset the game */ 
+reset :- 
+        goNoMsg(reset0), 
+        nl.
+
 /* Map for paths */
 
 map(right, right01).
@@ -299,10 +304,8 @@ instructions :-
         write('name: Set your name.'), nl,
         write('inventory: Show which items you have.'), nl,
         write('look: Describe your sourrundings.'), nl,
-        /* TODO: write('reset: Reset the game.'), nl,*/
-        write('TODO'), nl,
+        write('reset: Reset the game.'), nl,
         nl.
-
 
 /* This rule prints out instructions and tells where you are. */
 
@@ -556,9 +559,10 @@ describe(registerAtSchool) :-
 
 /* RESETS */
 
+
 describe(reset0) :- 
         nl,
-        write('Reset msg'),
+        write(' The game will now reset '),
         nl,
         goNoMsg(entrance),
         nl,
