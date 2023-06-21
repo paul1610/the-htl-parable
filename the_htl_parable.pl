@@ -238,6 +238,7 @@ name :-
         assert(get_name(X)),
         heisenberg(X).
 
+/* easter egg */
 heisenberg(Name) :- 
         Name = 'say_my_name', 
         write('Heisenberg'), 
@@ -251,7 +252,9 @@ instructions :-
         nl,
         write('Enter commands using standard Prolog syntax.'), nl,
         write('Available commands are:'), nl,
+        write('start: Start the game.'), nl,
         write('name: Set your name.'), nl,
+        write('inventory: Show which items you have.'), nl,
         write('TODO'), nl,
         nl.
 
@@ -511,25 +514,25 @@ describe(registerAtSchool) :-
 describe(reset01) :-
         write('Oh '), 
         write_name, 
-        write(' this is a mess, this is really a mess, I don''t even know where you are right now. Let me look through the script quickly *scrolling through pages* no, no, this isn''t supposed to happen. You have run so far off it isn''t ever worth the effort trying to save this. Let me just reset the game and you can try again. '),
+        write(' this is a mess, this is really a mess, I don''t even know where you are right now. Let me look through the script quickly *scrolling through pages* no, no, this isn''t supposed to happen. You have run so far off it isn''t ever worth the effort trying to save this. Let me just reset the game and you can try again.'),
         nl,
         go(entrance), 
         retractall(inventory).
 
 /* 1.2.0 */
 describe(reset02) :-
-        write(' You just decide to wait it out, what''s the worst that can happen, after about 10 minutes pass by, a teacher walks in. Oh '),
+        write('You just decide to wait it out, what''s the worst that can happen, after about 10 minutes pass by, a teacher walks in. Oh '),
         write_name,
-        write('  this is a mess, I don''t even know if this is in the script anymore, wait a sec. Let me find out what your options are *scrolls through papers* oh no '),
+        write(' this is a mess, I don''t even know if this is in the script anymore, wait a sec. Let me find out what your options are *scrolls through papers* oh no '),
         write_name,
-        write(' this doesn''t look good you are way of the intended path, no point in trying to get you back, let me just restart the game, it will be easier for us both this way. '),
+        write(' this doesn''t look good you are way of the intended path, no point in trying to get you back, let me just restart the game, it will be easier for us both this way.'),
         nl,
         go(entrance),
         retractall(inventory).
 
 /* 1.3.4 */
 describe(reset03) :-
-        write(' Well, that didn''t go well for you, maybe you''ll do better in the next run '),
+        write('Well, that didn''t go well for you, maybe you''ll do better in the next run.'),
         nl,
         go(entrance),
         retractall(inventory).
@@ -550,14 +553,14 @@ describe(reset05) :-
 
 /* 3.6 */
 describe(reset04) :-
-        write(' Sadly, you are very bad at LOAL and your answer was wrong so you get the Frühwarnung and I have to reset the game :( '),
+        write('Sadly, you are very bad at LOAL and your answer was wrong so you get the Frühwarnung and I have to reset the game :/ '),
         nl,
         go(entrance),
         retractall(inventory).
 
 /* 7 */
 describe(leave) :- 
-        write(' He left the school happy with his decision.'),
+        write('He left the school happy with his decision.'),
         nl,
         go(entrance),
         retractall(inventory).
