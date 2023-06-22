@@ -450,7 +450,7 @@ describe(coffee) :-
         write('You know you shouldn''t drink something from strangers, I really tried to keep you out of this. So as '),
         write_name,
         write(' drinks the coffer he starts to feel a little dizzy and nauseous, and then suddenly blacks out. When he opens his eyes again, he is tied to a chair in a dark room that looks to be a basement.'),
-        path(coffee, exit) -> (assert(i_am_at(exit)), look, fail) ; (goNoMsg(reset02), fail),
+        path(coffee, exit) -> ((retract(i_am_at(coffee)); assert(i_am_at(exit)), look, fail)) ; (goNoMsg(reset02), fail),
         nl.
 
 /* 1.3 */
