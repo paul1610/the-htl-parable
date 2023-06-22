@@ -85,7 +85,7 @@ path(seat, talkToTeacher). /* 4 -> 5 */
 path(seat, exitClass). /* 4 -> 3.1.0 */
 
 path(talkToTeacher, registerAtSchool). /* 5 -> 6 */
-path(registerAtSchool, leave). /* 6 -> 7 TODO?? */
+path(registerAtSchool, leave). /* 6 -> 7 */
 path(talkToTeacher, pressButton). /* 5 -> 3.3 */
 
 path(pressButton, helpNarrator). /* 3.3 -> 3.4 */
@@ -114,6 +114,8 @@ take(X) :-
         at(X, Place),
         retract(at(X, Place)),
         assert(holding(X)),
+        nl,
+        available_paths(Place),
         !, nl.
 
 take(_) :-
@@ -234,7 +236,7 @@ reset :-
         retractall(get_name(_)),
         retractall(path(_, _)),
         retractall(holding(_)),
-        assert(i_am_at(entrance)), /* todo fix reset location */
+        assert(i_am_at(entrance)),
         start,
         nl.
 
@@ -291,7 +293,7 @@ print_available_commands([Command|Rest]) :-
 
 notice_objects_at(Place) :-
         at(X, Place),
-        write('There is a '), write(X), write(' here. Use ''pick(itemName).'' to pick it up'), nl,
+        write('There is a '), write(X), write(' here. Use ''pick(itemName).'' to pick it up.'), nl,
         fail.
 
 notice_objects_at(_).
@@ -306,7 +308,8 @@ name :-
         write('please type your name: '),
         nl,
         read(X),
-        retract(get_name(john)), /* TODO: fix, name can only be changed once */
+        get_name(Y),
+        retract(get_name(Y)),
         assert(get_name(X)),
         heisenberg(X).
 
@@ -319,7 +322,6 @@ heisenberg(Name) :-
 
 
 /* This rule just writes out game instructions. */
-/* TODO: Update */
 instructions :-
         nl,
         write('Welcome to The HTL Parable, before we start you can look through our list of commands here'), nl,
@@ -330,6 +332,7 @@ instructions :-
         write('inventory: Show which items you have.'), nl,
         write('look: Describe your sourrundings.'), nl,
         write('reset: Reset the game.'), nl,
+        write('pick(Item): Pick up an item.'), nl,
         write('drop(Item): Drop an item.'), nl,
         nl.
 
@@ -352,15 +355,15 @@ describe(entrance) :-
 
 /* 0.1 */
 describe(stay) :- 
-        /* todo: wait 1min? */
+        sleep(5),
         write_name,
         write(' wasn''t sure if he should go up the stairs. He was thinking if it is the right decision to make, but after a good while he finally decided to go up the stairs.'),
-        nl,
-        /* todo: wait 1min? */
+        nl,nl,
+        sleep(5),
         write_name,
         write(', hello? Are you still here, you have to work with me already. I have to tell a story.'),
-        nl,
-        /* todo: wait 1min? */
+        nl,nl,
+        sleep(5),
         write_name,
         write(' was probably not there anymore, he just left the narrator before even making one decision. Oh wait you were looking around the whole time and just noticed a weird looking item'),
         write('?'),
@@ -447,7 +450,6 @@ describe(coffee) :-
         write('You know you shouldn''t drink something from strangers, I really tried to keep you out of this. So as '),
         write_name,
         write(' drinks the coffer he starts to feel a little dizzy and nauseous, and then suddenly blacks out. When he opens his eyes again, he is tied to a chair in a dark room that looks to be a basement.'),
-        /*todo fix*/
         path(coffee, exit) -> (assert(i_am_at(exit)), look, fail) ; (goNoMsg(reset02), fail),
         nl.
 
@@ -588,10 +590,12 @@ describe(reset0) :-
         nl,
         write('The game will now reset '),
         nl,
-        goNoMsg(entrance),
+        i_am_at(X),
+        retract(i_am_at(X)),
+        retractall(holding(_)) /* retractall items from inventory */,
+        assert(i_am_at(reset0)),
+        go(entrance),
         nl,
-        retractall(holding(_)), /* retractall items from inventory */
-        available_paths(entrance),
         fail.
 
 /* 0.3.2 */
