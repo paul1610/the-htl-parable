@@ -2,6 +2,7 @@
 
 :- dynamic i_am_at/1, at/2, holding/1, get_name/1, path/2.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(get_name(_)), retractall(path(_, _)), retractall(holding(_)).
+:- initialization(start).
 
 /* defines the start location */
 
