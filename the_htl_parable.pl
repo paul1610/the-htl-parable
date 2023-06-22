@@ -348,25 +348,26 @@ start :-
 
 /* 0 */
 describe(entrance) :- 
+        write('Narrator: Hello, I am the Narrator... I will guide you through this game to get you done as quick as possible!'),
+        nl,
         write('Narrator: '),
         write_name,
-        write(' just entered the HTL, you are wondering where you are and what this strange building is. Looking to the right you see a hallway and in front of you are stairs. After a little while you decide to go up the stairs.'),
+        write(' just entered the HTL. You are wondering where you are and what this strange building is. Looking to the right, you see a hallway and in front of you are stairs. After a little while you decide to go up the stairs.'),
         nl.
 
 /* 0.1 */
 describe(stay) :- 
         sleep(5),
         write_name,
-        write(' wasn''t sure if he should go up the stairs. He was thinking if it is the right decision to make, but after a good while he finally decided to go up the stairs.'),
+        write(' wasn''t sure if he should go up the stairs. He was wondering if it is the right decision to make, but after a good while he finally decided to go up the stairs.'),
         nl,nl,
         sleep(5),
         write_name,
-        write(', hello? Are you still here, you have to work with me already. I have to tell a story.'),
+        write(', hello? Are you still here? You have to work with me already. I have to tell a story...'),
         nl,nl,
         sleep(5),
         write_name,
-        write(' was probably not there anymore, he just left the narrator before even making one decision. Oh wait you were looking around the whole time and just noticed a weird looking item'),
-        write('?'),
+        write(' was probably not there anymore. He just left the narrator before even making a single decision. Oh wait, you were looking around the whole time and just noticed a weird looking item.'),
         nl,
         write('Do you want to pick it up?'),
         nl.
@@ -374,25 +375,25 @@ describe(stay) :-
 /* 0.2 */
 describe(right01) :-
         write_name,
-        write(' went right and not up the really nice-looking stairs, which is ok, he probably just wanted to explore a little, so he admires them and walks away.'),
+        write(' went right and not up the really really nice-looking stairs, which is ok, he probably just wanted to explore the building a little. So he admires them and walks away.'),
         nl.
 
 /* 0.2.0 */
 describe(slightlyOpenedDoor) :-
         write_name,
-        write(' persisted to not follow any instructions, whatsoever and just goes into the open door. '),
+        write(' persisted to not follow any instructions and just walks into the open door.'),
         write_name,
-        write(' don''t you know that''s a little bald of you.'),
+        write(' don''t you know that''s a little bald of you?'),
         nl,
-        write('Anyway, you look around for a bit and find a red triangle, '),
+        write('Anyway, you look around for a bit and find a red triangle. '),
         write_name,
-        write(' ignores it and goes back to the stairs he wanted to go up.'),
+        write(' ignores it and goes back to the stairs, which he felt an urge to go up.'),
         nl.
 
 /* 0.3 */
 describe(hallway01) :-
         write_name,
-        write(' wanted to prove that he is in control of the story, so he went down the hallway instead of going the intended way.'),
+        write(' wanted to prove that he is in control of the story. So he went down the hallway instead of going the intended way.'),
         nl,
         write('While walking '),
         write_name,
@@ -404,7 +405,7 @@ describe(teacher01) :-
         write_name,
         write(' finally did the right thing and talked to the teacher. He doesn''t even know why because he didn''t have anything to talk about. He just rambled a bit about the weather. '),
         write_name,
-        write(' didn''t get why but the conversation flow really well and the teacher invited him to follow him into an office which '),
+        write(' didn''t get why, but the conversation went really well, and the teacher invited him to follow him into an office which '),
         write_name,
         write(' gladly accepted.'),
         nl.
@@ -413,7 +414,7 @@ describe(teacher01) :-
 describe(panic) :-
         write('But no. Of course, not because '),
         write_name,
-        write(' never does what he is supposed to do. So, he just started to panic he didn''t know what to say so he just said an unbelievably stupid excuse and ran off.'),
+        write(' never does what he is supposed to do. He just started to panic and didn''t know what to say, so he just told an unbelievably stupid excuse and ran off.'),
         nl,
         goNoMsg(reset01).
 
@@ -423,18 +424,18 @@ describe(door01) :-
         write_name,
         write(' didn''t just talk to the teacher because '),
         write_name,
-        write(' has no social skills what so ever so he just entered to door to his left. He quickly closed the door behind him. When he looked up, he found a huge dark hole in front of him. He was really freaked out by It and didn''t really know what to do. He thought if he should just go out of the school as quickly as possible, but no, he is too much into it now so he just jumped into the hole.'),
+        write(' has no social skills. He just entered to door to his left and quickly closed the door behind him. When he looked up, he found a huge dark scary hole in front of him, which really freaked him out. He didn''t really know what to do and asked himself if he should just run out of the school as quickly as possible. But no, he is too much into it now, so he just jumped into the hole.'),
         nl.
 
 /* 1 */
 describe(stairs) :-
-        write('You go up the stairs and think ''what a nice place''. In front of you is a teacher. You are wondering if you should talk to him, but you decide not to and just walk by since you wouldn''t have anything to talk about anyway. as you walk up the stairs you notice a knife hanging on the wall, you probably shouldn''t take things that don''t belong to him.'),
+        write('You go up the stairs and think ''what a nice place''. In front of you is a teacher. You are wondering if you should talk to him, but you decide not to and just walk by since you wouldn''t have anything to talk about anyway. As you walk up the stairs you notice a knife hanging on the wall, you probably shouldn''t take things that don''t belong to him.'),
         nl.
 
 /* 1.0 */
 describe(teacher02) :-
         write_name,
-        write(' just greeted the teacher. He didn''t even know why but he just kept saying words and it kept working. It seemed to be an really interesting conversation. After like 5 minutes of talk the teacher invited him to his office but '),
+        write(' just greeted the teacher. He didn''t even know why but he just kept saying words and it was working. It seems to be an really interesting conversation. After 5 minutes of talking to the teacher, he gets invited him to an office but '),
         write_name,
         write(' didn''t except his offer because it just didn''t feel right.'),
         nl.
@@ -442,14 +443,14 @@ describe(teacher02) :-
 /* 1.1 */
 describe(office) :-
         write_name,
-        write(' just ignored the story path because he wanted to ''explore on his own'' or something like that so he is just following the teacher into the office. So, the conversation starts going again and the teacher offers him a cup of coffee. He realises that he is not on the right way and quickly goes back to the classroom and refuses the coffee.'),
+        write(' just ignored the story path because he wanted to ''explore on the story on his own'', so he just started following the teacher into the office. The conversation starts going again and the teacher offers him a cup of coffee. He realises that he is not on the right path and quickly walks back to the classroom and refuses the coffee.'),
         nl.
 
 /* 1.2 */
 describe(coffee) :-
         write('You know you shouldn''t drink something from strangers, I really tried to keep you out of this. So as '),
         write_name,
-        write(' drinks the coffer he starts to feel a little dizzy and nauseous, and then suddenly blacks out. When he opens his eyes again, he is tied to a chair in a dark room that looks to be a basement.'),
+        write(' drinks the coffee he starts to feel a little dizzy, then nauseous, and after a minute suddenly blacks out. When he opens his eyes again, he is tied to a chair in a dark room that looks to be a basement.'),
         path(coffee, exit) -> (assert(i_am_at(exit)), look, fail) ; (goNoMsg(reset02), fail),
         nl.
 
@@ -463,30 +464,30 @@ describe(exit) :-
 
 /* 1.3.0 */
 describe(exploreOnYourOwn) :-
-        write('Oh come on, this is bad, this won''t go well for you, you really should have trusted me this time, anyway too late now, in front of you is a toilet door you could hide in, as you hear a teacher behind you, but in front of you is a lightsaber you could use to defend yourself, this is on you now, I am not even trying to get you back on the real path, you deicide.'),
+        write('Oh come on, this is bad, this won''t go well for you, you really should have trusted me this time. Anyway it''s too late now. In front of you is a toilet you could hide in. You hear a teacher behind you, but in front of you is a lightsaber you could use to defend yourself. This is on you now. I am not even trying to get you back on the real path... Your decicion.'),
         nl.
 
 /* 1.3.0.0 */
 describe(hideInToilet) :-
         write_name,
-        write(' quickly runs into the toilet and tries to his, sadly the teacher saw him, follows him into the toilet and gives him a Frühwarnung.'),
+        write(' quickly runs into the toilet and tries to hide. Sadly the teacher noticed and follows him into the toilet, to gives him a Frühwarnung.'),
         nl.
 
 /* 1.3.1 */
 describe(goToLightSaber) :-
         write('So '),
         write_name,
-        write(' decided to sprint to the lightsaber, he grabbed it, and a teacher is approaching him with a deadly look in his eyes and a pistol that appears to fire Frühwarnungen whatever that means, he can block the first two shots and is ready for the next one, his inner jedi seems to be awaken but right when he wants to block the next one, a teacher from behind gives him the Frühwarnung.'),
+        write(' decided to sprint to the lightsaber and grabbed it. The teacher is approaching him with a deadly look in his eyes and a pistol that appears to fire Frühwarnungen. He can block the first two shots and is ready for the next one. His inner jedi seems to be awaken, but right when he wants to block the next shot, a teacher gives him the Frühwarnung from behind.'),
         nl.
 
 /* 1.4 */
 describe(trustNarrator) :-
-        write('Oh, that''s really great, it''s too late to get you on the intendent path so let''s try to escape together, go up the stairs again and into the classroom, it should be empty by now. When you are there, there is a button behind the second picture, press it.'),
+        write('Oh, that''s really great, it''s too late to get you on the intendent path. So let''s try to escape together. Go up the stairs again and into the classroom. It should be empty by now. When you are there, there is a button behind the second picture, press it.'),
         nl.
 
 /* 1.5 */
 describe(findButton) :-
-        write('As you press the button a secret door opens behind you, you go in and see me, some behind me keeps me hostage but you decide to knock him out and help me.'),
+        write('As you press the button, a secret door opens behind you. You go in and see me, something behind me keeps me hostage but you decide to knock him out and help me.'),
         nl.
 
 /* 1.6 */
@@ -505,7 +506,7 @@ describe(toilet) :-
         write_name,
         write(' just decided to go into the toilet for no reason, '),
         write_name,
-        write(' didn''t even need to pee now just stands there, wondering what he should do. No waiting any longer he decides to exit the toilet again and finally go into the classroom and listen to the teacher.'),
+        write(' didn''t even need to pee and now just stands there, wondering what he should do. Not waiting any longer, he decides to exit the toilet again and finally goes into the classroom, to listen to the teacher.'),
         nl.
 
 /* 3 */
@@ -516,7 +517,7 @@ describe(class) :-
 /* 3.0 */
 describe(stand) :-
         write_name,
-        write(' weirdly enough didn''t follow the instructions but just stood there like a weirdo. What are you doing '),
+        write(' weirdly enough didn''t follow the instructions, and just stood there like an absolute weirdo. What are you doing '),
         write_name,
         write('?'),
         nl.
@@ -524,27 +525,28 @@ describe(stand) :-
 /* 3.1 */
 describe(askForSeat) :-
         write_name,
-        write(' just ask someone to sit on their seat. *Quick interruption form narrator* hey, what are you doing, aren''t you ashamed man. So, as I was saying '),
+        write(' just ask someone to sit on their seat. *Quick interruption form narrator* Hey, what are you doing? Aren''t you ashamed man. So, as I was saying: '),
+        nl,
         write_name,
-        write(' asked to sit on the seat of someone else, probably because they were so confused and overwhelmed by the questions they said yes. So, he set on the seat and listened to the lesson of the teacher.'),
+        write(' asked to sit on the someone elses seat. Probably because they were so confused and overwhelmed by the questions, that they said yes. So, he sat on the seat and listened to the teachers lesson.'),
         nl.
 
 /* 3.1.0 */
 describe(exitClass) :-
         write('What are you doing '),
         write_name,
-        write(' you should have talked to the teacher, whatever it''s not too late, just wait till they are done with the lesson and talk to them.'),
+        write(' you should have talked to the teacher, whatever it''s not too late, just wait until they are done with the lesson and talk to them.'),
         nl.
 
 /* 3.1.1 */
 describe(exitSchool) :-
-        write('So, you are just leaving? Are you serious? There are so many different paths you could have taken but you took this one? Whatever it''s too late now.'),
+        write('So, you are just leaving? Are you serious? There are so many different paths you could have taken, but you took this one? Whatever it''s too late now.'),
         nl.
 
 /* 3.2 */
 describe(wait) :-
         write_name,
-        write(' just waited and looked around, he noticed a strange looking button on the wall and pressed it.'),
+        write(' just waited and looked around. He noticed a strange looking button on the wall and pressed it.'),
         nl.
 
 /* 3.3 */
