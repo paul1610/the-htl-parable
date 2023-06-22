@@ -559,7 +559,7 @@ describe(helpNarrator) :-
 
 /* 3.5 */
 describe(attack) :-
-        write('Some other teacher throws a Loal question at you which you have to get right in order to doge the Frühwarnung.'),
+        write('Some other teacher throws a Loal question at you which you have to get right in order to dodge the Frühwarnung.'),
         nl.
 
 /* 4 */
@@ -627,14 +627,14 @@ describe(reset03) :-
 
 /* 1.5.0 */
 describe(runWithOutNarrator) :- 
-        write(' You coward, you just ran off without me, well I can''t be free neither can you, I''ll reset the game and we will start all over again. '),
+        write('You coward, you just ran off without me, well I can''t be free neither can you, I''ll reset the game and we will start all over again. '),
         nl,
         goNoMsg(reset0);
         nl.
 
 /* 3.1.2 */
 describe(reset05) :- 
-        write('  Let me just reset you back to the beginning. Don''t ever do that again. '), 
+        write('Let me just reset you back to the beginning. Don''t ever do that again. '), 
         nl, 
         goNoMsg(reset0);
         nl.
